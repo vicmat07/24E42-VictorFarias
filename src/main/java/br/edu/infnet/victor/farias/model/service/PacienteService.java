@@ -48,6 +48,9 @@ public class PacienteService {
 	}
 	
 	public void removerPaciente(Integer idPaciente) {
-		pacienteRepository.deleteById(idPaciente);
+		Paciente paciente = pacienteRepository.findById(idPaciente)
+				.orElseThrow(() -> new PacienteNaoEncontradoException(Constantes.MSG_PACIENTE_NOT_FOUND));
+		
+		pacienteRepository.delete(paciente);
 	}
 }
