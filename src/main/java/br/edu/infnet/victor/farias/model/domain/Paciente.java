@@ -16,4 +16,11 @@ public class Paciente extends Pessoa {
 	public void setDiagnostico(String diagnostico) {
 		this.diagnostico = diagnostico;
 	}
+	
+	public Paciente(String nome, String email) {
+		this.setNome(nome);
+		this.setEmail(email);
+	}
+	
+	private Paciente() {}
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
 import br.edu.infnet.victor.farias.exceptions.GuiaExpiradaException;
 import br.edu.infnet.victor.farias.exceptions.PacienteNaoEncontradoException;
 
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(GuiaExpiradaException.class)
 	public ResponseEntity<Object> handleValidationExceptions(GuiaExpiradaException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
+	}
+
+	@ExceptionHandler(DataConsultaInvalidaException.class)
+	public ResponseEntity<Object> handleValidationExceptions(DataConsultaInvalidaException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
 	}
 }

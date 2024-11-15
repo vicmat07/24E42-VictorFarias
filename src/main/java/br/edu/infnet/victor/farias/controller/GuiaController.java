@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.infnet.victor.farias.dtos.GerarGuiaDto;
 import br.edu.infnet.victor.farias.model.domain.Guia;
 import br.edu.infnet.victor.farias.model.service.GuiaService;
 
@@ -34,9 +35,9 @@ public class GuiaController {
 	}
 	
 	@PostMapping(value="/gerar")
-	public ResponseEntity<Guia> gerarGuia(@Valid @RequestBody Integer idPaciente) {
+	public ResponseEntity<Guia> gerarGuia(@Valid @RequestBody GerarGuiaDto dto) {
 		
-		Guia guia = guiaService.GerarGuia(idPaciente);
+		Guia guia = guiaService.GerarGuia(dto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(guia);
 	}

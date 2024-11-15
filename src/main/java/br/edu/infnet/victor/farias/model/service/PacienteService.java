@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.victor.farias.Constantes;
+import br.edu.infnet.victor.farias.dtos.CriarPacienteDto;
 import br.edu.infnet.victor.farias.exceptions.PacienteNaoEncontradoException;
 import br.edu.infnet.victor.farias.model.domain.Endereco;
 import br.edu.infnet.victor.farias.model.domain.Paciente;
@@ -22,15 +23,16 @@ public class PacienteService {
 	@Autowired
 	private LocalizacaoService localizacaoService;
 	
-	public void inserir(Paciente paciente) {
+	public Paciente inserir(CriarPacienteDto pacienteDto) {
 		
-		String cep = paciente.getEndereco().getCep();
+		Paciente paciente = new Paciente(pacienteDto.getNome(), pacienteDto.getEmail());
+		paciente.setDiagnostico(pacienteDto.getDiagnostico());
+		String cep = pacienteDto.getCep();
 		
 		Endereco endereco = localizacaoService.findByCep(cep);
-		
 		paciente.setEndereco(endereco);
 		
-		pacienteRepository.save(paciente);
+		return pacienteRepository.save(paciente);
 	}
 	
 	public Collection<Paciente> obterLista() {
@@ -43,5 +45,9 @@ public class PacienteService {
 	
 	public Paciente obterPorId(Integer id) {
 		return pacienteRepository.findById(id).orElseThrow(() -> new PacienteNaoEncontradoException(Constantes.MSG_PACIENTE_NOT_FOUND));
+	}
+	
+	public void removerPaciente(Integer idPaciente) {
+		pacienteRepository.deleteById(idPaciente);
 	}
 }

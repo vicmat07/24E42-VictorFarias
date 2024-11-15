@@ -50,4 +50,6 @@ public class Consulta {
 		this.particular = particular;
 		this.preco = preco;
 	}
+	
+	private Consulta() {}
 }

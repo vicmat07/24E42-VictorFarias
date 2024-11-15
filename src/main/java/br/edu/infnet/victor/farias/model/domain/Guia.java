@@ -34,8 +34,6 @@ public class Guia {
 	@JsonManagedReference
 	private List<Consulta> consultas;
 	
-	private int numeroMaximoDeConsultas = 5;
-	
 	private LocalDate dataDeExpiracao;
 	
 	public Integer getId() {
@@ -50,10 +48,6 @@ public class Guia {
 		return consultas;
 	}
 
-	public int getNumeroMaximoDeConsultas() {
-		return numeroMaximoDeConsultas;
-	}
-
 	public LocalDate getDataDeExpiracao() {
 		return dataDeExpiracao;
 	}
@@ -63,4 +57,6 @@ public class Guia {
 		this.paciente = paciente;
         this.dataDeExpiracao = LocalDate.now().plusDays(10);
 	}
+	
+	private Guia() {}
 }

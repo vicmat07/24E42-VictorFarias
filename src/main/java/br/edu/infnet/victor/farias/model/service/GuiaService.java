@@ -3,6 +3,10 @@ package br.edu.infnet.victor.farias.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.infnet.victor.farias.Constantes;
+import br.edu.infnet.victor.farias.dtos.GerarGuiaDto;
+import br.edu.infnet.victor.farias.exceptions.GuiaNaoEncontradaException;
+import br.edu.infnet.victor.farias.model.domain.Consulta;
 import br.edu.infnet.victor.farias.model.domain.Guia;
 import br.edu.infnet.victor.farias.model.domain.Paciente;
 import br.edu.infnet.victor.farias.model.repository.GuiaRepository;
@@ -16,8 +20,8 @@ public class GuiaService {
 	@Autowired
 	private PacienteService pacienteService;
 	
-	public Guia GerarGuia(Integer idPaciente) {
-		Paciente paciente = pacienteService.obterPorId(idPaciente);
+	public Guia GerarGuia(GerarGuiaDto requisicao) {
+		Paciente paciente = pacienteService.obterPorId(requisicao.getIdPaciente());
 		
 		Guia guia = new Guia(paciente);
 		
@@ -26,5 +30,14 @@ public class GuiaService {
 	
 	public Guia obterGuiaPorIdPaciente(Integer idPaciente) {
 		return guiaRepository.findByPaciente_Id(idPaciente);
+	}
+	
+	public void adicionarConsulta(Integer idGuia, Consulta consulta) {
+		Guia guia = guiaRepository.findById(idGuia)
+				.orElseThrow(() -> new GuiaNaoEncontradaException(Constantes.MSG_GUIA_NOT_FOUND));
+		
+		guia.getConsultas().add(consulta);
+		
+		guiaRepository.save(guia);
 	}
 }
