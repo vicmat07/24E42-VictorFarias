@@ -29,7 +29,11 @@ public class GuiaService {
 	}
 	
 	public Guia obterGuiaPorIdPaciente(Integer idPaciente) {
-		return guiaRepository.findByPaciente_Id(idPaciente);
+		
+		Guia guia = guiaRepository.findByPaciente_Id(idPaciente)
+				.orElseThrow(() -> new GuiaNaoEncontradaException(Constantes.MSG_GUIA_NOT_FOUND));
+		
+		return guia;
 	}
 	
 	public void adicionarConsulta(Integer idGuia, Consulta consulta) {
