@@ -10,6 +10,7 @@ import br.edu.infnet.victor.farias.dtos.CriarConsultaDto;
 import br.edu.infnet.victor.farias.exceptions.ConsultaExpiradaException;
 import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
 import br.edu.infnet.victor.farias.model.domain.Consulta;
+import br.edu.infnet.victor.farias.model.domain.Fisioterapeuta;
 import br.edu.infnet.victor.farias.model.domain.Guia;
 import br.edu.infnet.victor.farias.model.repository.ConsultaRepository;
 
@@ -21,6 +22,9 @@ public class ConsultaService {
 	
 	@Autowired
 	private GuiaService guiaService;
+	
+	@Autowired
+	private FisioterapeutaService fisioterapeutaService;
 	
 	private final float PRECO_CONSULTA = 5;
 	
@@ -48,7 +52,9 @@ public class ConsultaService {
 			throw new ConsultaExpiradaException(Constantes.MSG_GUIA_EXPIRED);
 		}
 		
-		Consulta consulta = new Consulta(requisicao.getData(), requisicao.isParticular(), PRECO_CONSULTA);
+		Fisioterapeuta fisioterapeuta = fisioterapeutaService.obterFisioterapeutaPorId(requisicao.getIdFisioterapeuta());
+		
+		Consulta consulta = new Consulta(requisicao.getData(), requisicao.isParticular(), PRECO_CONSULTA, fisioterapeuta);
 		
 		guiaService.adicionarConsulta(guia.getId(), consulta);
 		

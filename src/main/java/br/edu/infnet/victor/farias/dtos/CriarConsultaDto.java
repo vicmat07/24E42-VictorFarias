@@ -7,8 +7,14 @@ public class CriarConsultaDto {
 	private Integer idPaciente;
 	private LocalDate data;
 	private boolean particular;
+	private Integer idFisioterapeuta;
 	
-
+	public Integer getIdFisioterapeuta() {
+		return idFisioterapeuta;
+	}
+	public void setIdFisioterapeuta(Integer idFisioterapeuta) {
+		this.idFisioterapeuta = idFisioterapeuta;
+	}
 	public Integer getIdPaciente() {
 		return idPaciente;
 	}

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
+import br.edu.infnet.victor.farias.exceptions.FisioterapeutaNaoEncontradoException;
 import br.edu.infnet.victor.farias.exceptions.GuiaExpiradaException;
 import br.edu.infnet.victor.farias.exceptions.GuiaNaoEncontradaException;
 import br.edu.infnet.victor.farias.exceptions.PacienteNaoEncontradoException;
@@ -44,6 +45,11 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(GuiaNaoEncontradaException.class)
 	public ResponseEntity<Object> handleValidationExceptions(GuiaNaoEncontradaException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(FisioterapeutaNaoEncontradoException.class)
+	public ResponseEntity<Object> handleValidationExceptions(FisioterapeutaNaoEncontradoException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }
