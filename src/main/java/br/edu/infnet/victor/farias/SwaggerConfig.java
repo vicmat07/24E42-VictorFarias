@@ -13,9 +13,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("API: vendedores de produtos")
+                .title("API: Gestão de Consultas e Pacientes")
                 .version("1.0")
-                .description("API para gestão de vendedores")
+                .description("API para gestão de Consultas e Pacientes")
                 .contact(new Contact()
                     .name("Equipe de Desenvolvimento")
                     .email("dev@infnet.com")));

@@ -20,6 +20,9 @@ import br.edu.infnet.victor.farias.Constantes;
 import br.edu.infnet.victor.farias.dtos.CriarPacienteDto;
 import br.edu.infnet.victor.farias.model.domain.Paciente;
 import br.edu.infnet.victor.farias.model.service.PacienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -28,19 +31,28 @@ public class PacienteController {
 	@Autowired
 	private PacienteService pacienteService;
 	
+	@Operation(summary="Recupera a lista de pacientes")
 	@GetMapping(value="/lista")
+	@ApiResponse(responseCode = "200", description = "Sucesso")
 	public ResponseEntity<Collection<Paciente>> obterLista() {
 		return ResponseEntity.ok(pacienteService.obterLista());
 	}
 	
+	@Operation(summary="Cria um novo paciente")
 	@PostMapping
+	@ApiResponse(responseCode = "201", description = "Criado com Sucesso")
 	public ResponseEntity<Paciente> criarPaciente(@Valid @RequestBody CriarPacienteDto pacienteDto) {
 		
 		Paciente paciente = pacienteService.inserir(pacienteDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(paciente);
 	}
 	
+	@Operation(summary="Recupera pacientes pelo nome")
 	@GetMapping(value="/buscar/{nome}")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200", description = "Sucesso"),
+			@ApiResponse(responseCode = "204", description = "Sem pacientes para esse filtro")
+	})
 	public ResponseEntity<List<Paciente>> obterPacientePorNome(@PathVariable String nome){
 		List<Paciente> pacientes = pacienteService.obterPorNome(nome);
 		
@@ -51,7 +63,9 @@ public class PacienteController {
 		return ResponseEntity.ok(pacientes);
 	}
 	
+	@Operation(summary="Remove um paciente")
 	@DeleteMapping(value="/{idPaciente}")
+	@ApiResponse(responseCode = "200", description = "Excluido com sucesso")
 	public ResponseEntity<String> removerPaciente(@PathVariable Integer idPaciente){
 		pacienteService.removerPaciente(idPaciente);
 		
