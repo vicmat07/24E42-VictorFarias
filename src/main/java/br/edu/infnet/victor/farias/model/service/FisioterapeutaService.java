@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.victor.farias.Constantes;
+import br.edu.infnet.victor.farias.dtos.CriarFisioterapeutaDto;
 import br.edu.infnet.victor.farias.exceptions.FisioterapeutaNaoEncontradoException;
 import br.edu.infnet.victor.farias.model.domain.Fisioterapeuta;
 import br.edu.infnet.victor.farias.model.repository.FisioterapeutaRepository;
@@ -19,5 +20,14 @@ public class FisioterapeutaService {
 				.orElseThrow(() -> new FisioterapeutaNaoEncontradoException(Constantes.MSG_FISIOTERAPEUTA_NOT_FOUND));
 		
 		return fisioterapeuta;
+	}
+	
+	public Fisioterapeuta criarFisioterapeuta(CriarFisioterapeutaDto requisicao) {
+		
+		Fisioterapeuta fisioterapeuta = new Fisioterapeuta(
+				requisicao.getNome(), requisicao.getEmail(), requisicao.getNumeroCrefito());
+		
+		return fisioterapeutaRepository.save(fisioterapeuta);
+		
 	}
 }
