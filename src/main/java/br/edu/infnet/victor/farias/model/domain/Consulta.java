@@ -2,10 +2,13 @@ package br.edu.infnet.victor.farias.model.domain;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
@@ -26,6 +29,8 @@ public class Consulta {
 	@DecimalMin(value="10.0", message = "o preço deve ser maior que 10.0")
 	private float preco;
 	
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="idFisioterapeuta")
 	private Fisioterapeuta fisioterapeuta;
 	
 	public Fisioterapeuta getFisioterapeuta() {
