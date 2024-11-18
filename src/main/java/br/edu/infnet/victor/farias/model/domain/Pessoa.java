@@ -10,6 +10,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="Pessoas")
@@ -24,7 +26,10 @@ public abstract class Pessoa {
 	@JoinColumn(name="idEndereco")
 	private Endereco endereco;
 	
+	@NotNull(message="O campo email é obrigatório")
 	private String email;
+
+	@Size(min=3, max=50, message="O nome deve ter entre 3 a 5 caracteres")
 	private String nome;
 	
 	public Integer getId() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.edu.infnet.victor.farias.Constantes;
 import br.edu.infnet.victor.farias.dtos.CriarConsultaDto;
 import br.edu.infnet.victor.farias.exceptions.ConsultaExpiradaException;
+import br.edu.infnet.victor.farias.exceptions.ConsultaNaoEncontradaException;
 import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
 import br.edu.infnet.victor.farias.model.domain.Consulta;
 import br.edu.infnet.victor.farias.model.domain.Fisioterapeuta;
@@ -26,9 +27,13 @@ public class ConsultaService {
 	@Autowired
 	private FisioterapeutaService fisioterapeutaService;
 	
-	private final float PRECO_CONSULTA = 5;
+	private final float PRECO_CONSULTA = 15;
 	
 	public void removerConsulta(Integer id) {
+		if(!consultaRepository.existsById(id)) {
+			throw new ConsultaNaoEncontradaException(Constantes.MSG_CONSULTA_NOT_FOUND);
+		}
+		
 		consultaRepository.deleteById(id);
 	}
 	
@@ -56,8 +61,8 @@ public class ConsultaService {
 		
 		Consulta consulta = new Consulta(requisicao.getData(), requisicao.isParticular(), PRECO_CONSULTA, fisioterapeuta);
 		
-		guiaService.adicionarConsulta(guia.getId(), consulta);
+		return guiaService.adicionarConsulta(guia.getId(), consulta);
 		
-		return consulta;
+		
 	}
 }

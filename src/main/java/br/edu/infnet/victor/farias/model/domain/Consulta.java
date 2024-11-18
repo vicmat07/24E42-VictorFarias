@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="Consultas")
@@ -29,9 +32,14 @@ public class Consulta {
 	@DecimalMin(value="10.0", message = "o preço deve ser maior que 10.0")
 	private float preco;
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne
 	@JoinColumn(name="idFisioterapeuta")
 	private Fisioterapeuta fisioterapeuta;
+	
+	@ManyToOne
+	@JoinColumn(name = "idGuia")
+	@JsonBackReference
+	private Guia guia;
 	
 	public Fisioterapeuta getFisioterapeuta() {
 		return fisioterapeuta;
@@ -41,6 +49,10 @@ public class Consulta {
 		this.fisioterapeuta = fisioterapeuta;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
 	public LocalDate getData() {
 		return data;
 	}

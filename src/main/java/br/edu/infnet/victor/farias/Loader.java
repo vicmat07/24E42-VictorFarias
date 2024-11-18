@@ -36,6 +36,18 @@ public class Loader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception{
 		
+		CriarPacienteDto requisicao = new CriarPacienteDto();
+		requisicao.setCep("50800220");
+		requisicao.setNome("Victor Farias");
+		requisicao.setEmail("victor.farias@test.com");
+		requisicao.setDiagnostico("Lesão no joelho");
+		Paciente paciente = pacienteService.inserir(requisicao);
 		
+		CriarFisioterapeutaDto requisicaoFisioterapeuta = new CriarFisioterapeutaDto();
+		requisicaoFisioterapeuta.setCep("50800220");
+		requisicaoFisioterapeuta.setEmail("victor.fisio@profissional.com");
+		requisicaoFisioterapeuta.setNome("Victor Fisioterapeuta");
+		requisicaoFisioterapeuta.setNumeroCrefito("123456");
+		Fisioterapeuta fisioterapeuta = fisioterapeutaService.criarFisioterapeuta(requisicaoFisioterapeuta);
 	}
 }

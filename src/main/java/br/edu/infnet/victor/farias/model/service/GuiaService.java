@@ -1,5 +1,7 @@
 package br.edu.infnet.victor.farias.model.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +38,15 @@ public class GuiaService {
 		return guia;
 	}
 	
-	public void adicionarConsulta(Integer idGuia, Consulta consulta) {
+	@Transactional
+	public Consulta adicionarConsulta(Integer idGuia, Consulta consulta) {
 		Guia guia = guiaRepository.findById(idGuia)
 				.orElseThrow(() -> new GuiaNaoEncontradaException(Constantes.MSG_GUIA_NOT_FOUND));
 		
 		guia.getConsultas().add(consulta);
 		
 		guiaRepository.save(guia);
+		
+		return consulta;
 	}
 }

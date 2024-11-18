@@ -29,7 +29,7 @@ public class Guia {
 	@JoinColumn(name="idPaciente")
 	private Paciente paciente;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="idConsulta")
 	@JsonManagedReference
 	private List<Consulta> consultas;

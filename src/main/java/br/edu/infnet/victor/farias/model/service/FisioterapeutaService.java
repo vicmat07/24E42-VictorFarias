@@ -1,5 +1,7 @@
 package br.edu.infnet.victor.farias.model.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,9 @@ public class FisioterapeutaService {
 		
 		return fisioterapeutaRepository.save(fisioterapeuta);
 		
+	}
+	
+	public Collection<Fisioterapeuta> obterLista(){
+		return (Collection<Fisioterapeuta>)fisioterapeutaRepository.findAll();
 	}
 }
