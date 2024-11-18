@@ -53,10 +53,6 @@ public class ConsultaService {
 	public Consulta adicionarConsulta(CriarConsultaDto requisicao) {
 		Guia guia = guiaService.obterGuiaPorIdPaciente(requisicao.getIdPaciente());
 		
-		if(guia.getDataDeExpiracao().isBefore(LocalDate.now()) ) {
-			throw new ConsultaExpiradaException(Constantes.MSG_GUIA_EXPIRED);
-		}
-		
 		Fisioterapeuta fisioterapeuta = fisioterapeutaService.obterFisioterapeutaPorId(requisicao.getIdFisioterapeuta());
 		
 		Consulta consulta = new Consulta(requisicao.getData(), requisicao.isParticular(), PRECO_CONSULTA, fisioterapeuta);

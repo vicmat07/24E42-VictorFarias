@@ -25,16 +25,14 @@ public class Guia {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@OneToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="idPaciente")
+	@OneToOne
+	@JoinColumn(name="idPaciente", unique=true)
 	private Paciente paciente;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="idConsulta")
 	@JsonManagedReference
 	private List<Consulta> consultas;
-	
-	private LocalDate dataDeExpiracao;
 	
 	public Integer getId() {
 		return id;
@@ -48,14 +46,9 @@ public class Guia {
 		return consultas;
 	}
 
-	public LocalDate getDataDeExpiracao() {
-		return dataDeExpiracao;
-	}
-
 	public Guia(Paciente paciente) {
 		this.consultas = new ArrayList<Consulta>();
 		this.paciente = paciente;
-        this.dataDeExpiracao = LocalDate.now().plusDays(10);
 	}
 	
 	private Guia() {}
