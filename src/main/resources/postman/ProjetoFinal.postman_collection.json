@@ -1,0 +1,745 @@
+{
+	"info": {
+		"_postman_id": "00f4f87c-aafa-46c5-b8c4-9a6cfb91e49c",
+		"name": "Projeto Final",
+		"description": "GuiaController: Este controller lida com operações relacionadas à criação e recuperação de guias de atendimento para pacientes.\n\n- **`GET /guias/{idPaciente}`**: Este endpoint recupera uma guia associada a um paciente específico. O método obterGuiaPorIdPaciente recebe um idPaciente como parâmetro de caminho e retorna a guia correspondente. Se a guia não for encontrada, a resposta terá o status 404 Not Found. Em caso de sucesso, a resposta terá o status 200 OK e incluirá a guia solicitada.\n    \n- **`POST /guias/gerar`**: Este endpoint cria uma nova guia para um paciente. O método gerarGuia recebe um objeto GerarGuiaDto como corpo da solicitação, validado pelo Spring, e utiliza esse dado para gerar a guia. Em caso de sucesso, o endpoint retorna uma resposta com status 201 Created, juntamente com os detalhes da guia criada.\n    \n\nConsultaController: Esta classe gerencia operações de agendamento, modificação e exclusão de consultas médicas.\n\n- **`POST /consultas`**: Este endpoint é usado para criar uma nova consulta para um paciente. O método agendarConsulta recebe um objeto CriarConsultaDto como corpo da solicitação, validado pelo Spring, e agenda a consulta correspondente. Em caso de sucesso, a resposta tem o status 201 Created com uma mensagem indicando que a consulta foi criada com sucesso.\n    \n- **`PATCH /consultas`**: Este endpoint permite modificar a data de uma consulta existente. O método modificarConsulta recebe um objeto AtualizarConsultaDto que inclui o idConsulta e a nova data da consulta. Se a modificação for bem-sucedida, a resposta retorna com status 200 OK, contendo os detalhes atualizados da consulta.\n    \n- **`DELETE /consultas/{idConsulta}`**: Este endpoint remove uma consulta específica com base no idConsulta passado como parâmetro de caminho. O método deleterConsulta exclui a consulta correspondente e retorna uma resposta com status 200 OK e uma mensagem indicando a remoção bem-sucedida.\n    \n\nPacienteController: Este controller é responsável por operações de gerenciamento de pacientes, incluindo criação, listagem, busca e exclusão de registros.\n\n- **`GET /pacientes/lista`**: Este endpoint retorna uma lista completa de pacientes cadastrados. O método obterLista chama o serviço pacienteService.obterLista() e retorna a coleção de pacientes. A resposta tem o status 200 OK em caso de sucesso.\n    \n- **`POST /pacientes`**: Este endpoint é utilizado para criar um novo paciente. O método criarPaciente recebe um objeto CriarPacienteDto como corpo da solicitação, que é validado pelo Spring, e cria o paciente correspondente. Em caso de sucesso, a resposta retorna com status 201 Created, contendo os detalhes do paciente recém-criado.\n    \n- **`GET /pacientes/buscar/{nome}`**: Este endpoint busca pacientes pelo nome passado como parâmetro de caminho. O método obterPacientePorNome retorna uma lista de pacientes que correspondem ao nome fornecido. Se não forem encontrados pacientes, a resposta retorna o status 204 No Content. Caso contrário, retorna o status 200 OK com a lista de pacientes.\n    \n- **`DELETE /pacientes/{idPaciente}`**: Este endpoint remove um paciente com base no idPaciente passado como parâmetro de caminho. O método removerPaciente chama o serviço pacienteService.removerPaciente() e retorna uma resposta com status 200 OK e uma mensagem indicando que a exclusão foi bem-sucedida.\n    \n\nFisioterapeutaController: Este controller lida com operações relacionadas à recuperação de informações dos fisioterapeutas cadastrados no sistema.\n\n**`GET /fisioterapeutas/lista`**:\n\nEste endpoint recupera a lista de todos os fisioterapeutas cadastrados no sistema. O método obterLista retorna todos os fisioterapeutas registrados. Em caso de sucesso, a resposta terá o status 200 OK e incluirá a lista dos fisioterapeutas.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18095520"
+	},
+	"item": [
+		{
+			"name": "Pacientes",
+			"item": [
+				{
+					"name": "Obter lista",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pacientes/lista",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pacientes",
+								"lista"
+							]
+						},
+						"description": "Lista todos os pacientes"
+					},
+					"response": [
+						{
+							"name": "Obter lista",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/pacientes/lista",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"pacientes",
+										"lista"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 04:45:40 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"endereco\": {\n            \"id\": 1,\n            \"cep\": \"50800-220\",\n            \"logradouro\": \"Rua Dona Inês Correa de Araújo\",\n            \"complemento\": \"\",\n            \"bairro\": \"Caxangá\",\n            \"localidade\": \"Recife\",\n            \"uf\": \"PE\"\n        },\n        \"email\": \"victor.farias@test.com\",\n        \"nome\": \"Victor Farias\",\n        \"diagnostico\": \"Lesão no joelho\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"João Silva\",\r\n    \"email\": \"joao.silva@test.com\",\r\n    \"diagnostico\": \"Lesão no braço\",\r\n    \"cep\": \"50800220\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pacientes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pacientes"
+							]
+						},
+						"description": "Adiciona o paciente caso a requisição seja válida"
+					},
+					"response": [
+						{
+							"name": "Adicionar",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"João Silva\",\r\n    \"email\": \"joao.silva@test.com\",\r\n    \"diagnostico\": \"Lesão no braço\",\r\n    \"cep\": \"50800220\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/pacientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"pacientes"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 04:46:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 3,\n    \"endereco\": {\n        \"id\": 2,\n        \"cep\": \"50800-220\",\n        \"logradouro\": \"Rua Dona Inês Correa de Araújo\",\n        \"complemento\": \"\",\n        \"bairro\": \"Caxangá\",\n        \"localidade\": \"Recife\",\n        \"uf\": \"PE\"\n    },\n    \"email\": \"joao.silva@test.com\",\n    \"nome\": \"João Silva\",\n    \"diagnostico\": \"Lesão no braço\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Bucar por nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pacientes/buscar?nome=Victor Farias",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pacientes",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "Victor Farias"
+								}
+							]
+						},
+						"description": "Encontra pacientes pelo nome através de uma query string"
+					},
+					"response": [
+						{
+							"name": "Bucar por nome",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/pacientes/buscar?nome=Victor Farias",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"pacientes",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "Victor Farias"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 04:46:41 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"endereco\": {\n            \"id\": 1,\n            \"cep\": \"50800-220\",\n            \"logradouro\": \"Rua Dona Inês Correa de Araújo\",\n            \"complemento\": \"\",\n            \"bairro\": \"Caxangá\",\n            \"localidade\": \"Recife\",\n            \"uf\": \"PE\"\n        },\n        \"email\": \"victor.farias@test.com\",\n        \"nome\": \"Victor Farias\",\n        \"diagnostico\": \"Lesão no joelho\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pacientes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pacientes",
+								"1"
+							]
+						},
+						"description": "Remove o paciente pelo Id"
+					},
+					"response": [
+						{
+							"name": "Remover",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/pacientes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"pacientes",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "32"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 22:50:50 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "Exclusão realizada com sucesso."
+						}
+					]
+				}
+			],
+			"description": "Endpoints do controller de **Pacientes**"
+		},
+		{
+			"name": "Guias",
+			"item": [
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idPaciente\": {{idPaciente}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/guias/gerar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"guias",
+								"gerar"
+							]
+						},
+						"description": "Cria a guia do paciente."
+					},
+					"response": [
+						{
+							"name": "Adicionar",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPaciente\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/guias/gerar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"guias",
+										"gerar"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 04:48:47 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"paciente\": {\n        \"id\": 1,\n        \"endereco\": {\n            \"id\": 1,\n            \"cep\": \"50800-220\",\n            \"logradouro\": \"Rua Dona Inês Correa de Araújo\",\n            \"complemento\": \"\",\n            \"bairro\": \"Caxangá\",\n            \"localidade\": \"Recife\",\n            \"uf\": \"PE\"\n        },\n        \"email\": \"victor.farias@test.com\",\n        \"nome\": \"Victor Farias\",\n        \"diagnostico\": \"Lesão no joelho\"\n    },\n    \"consultas\": [],\n    \"dataDeExpiracao\": \"2024-11-28\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obter por Id do Paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/guias/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"guias",
+								"1"
+							]
+						},
+						"description": "Recupera a guia do paciente."
+					},
+					"response": [
+						{
+							"name": "Obter por Id do Paciente",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/guias/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"guias",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 23:02:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"paciente\": {\n        \"id\": 1,\n        \"endereco\": {\n            \"id\": 1,\n            \"cep\": \"50800-220\",\n            \"logradouro\": \"Rua Dona Inês Correa de Araújo\",\n            \"complemento\": \"\",\n            \"bairro\": \"Caxangá\",\n            \"localidade\": \"Recife\",\n            \"uf\": \"PE\"\n        },\n        \"email\": \"victor.farias@test.com\",\n        \"nome\": \"Victor Farias\",\n        \"diagnostico\": \"Lesão no joelho\"\n    },\n    \"consultas\": [\n        {\n            \"id\": 1,\n            \"data\": \"2024-11-20\",\n            \"particular\": true,\n            \"preco\": 15,\n            \"fisioterapeuta\": {\n                \"id\": 2,\n                \"endereco\": null,\n                \"email\": \"victor.fisio@profissional.com\",\n                \"nome\": \"Victor Fisioterapeuta\",\n                \"numeroCrefito\": \"123456\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "Gera uma Guia para o paciente"
+		},
+		{
+			"name": "Consultas",
+			"item": [
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idPaciente\": {{idPaciente}},\r\n    \"data\": \"2024-11-20\",\r\n    \"particular\": true,\r\n    \"idFisioterapeuta\": {{idFisioterapeuta}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/consultas/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"consultas",
+								""
+							]
+						},
+						"description": "Cria uma nova consulta."
+					},
+					"response": [
+						{
+							"name": "Adicionar",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPaciente\": 1,\r\n    \"data\": \"2024-11-20\",\r\n    \"particular\": true,\r\n    \"idFisioterapeuta\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/consultas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"consultas",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/consultas/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"consultas",
+								"1"
+							]
+						},
+						"description": "Remove uma consulta."
+					},
+					"response": [
+						{
+							"name": "Remover",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/consultas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"consultas",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Modificar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idConsulta\": 1,\r\n    \"data\": \"2024-11-25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/consultas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"consultas"
+							]
+						},
+						"description": "Altera a data de uma consulta."
+					},
+					"response": [
+						{
+							"name": "Modificar",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idConsulta\": 1,\r\n    \"data\": \"2024-11-20\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/consultas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"consultas"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Endpoints do controller de **Consultas**."
+		},
+		{
+			"name": "Fisioterapeutas",
+			"item": [
+				{
+					"name": "Obter Lista",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/fisioterapeutas/lista",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fisioterapeutas",
+								"lista"
+							]
+						},
+						"description": "Obtem a lista de fisioterapeutas"
+					},
+					"response": [
+						{
+							"name": "Obter Lista",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/fisioterapeutas/lista",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fisioterapeutas",
+										"lista"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 23:02:38 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"endereco\": null,\n        \"email\": \"victor.fisio@profissional.com\",\n        \"nome\": \"Victor Fisioterapeuta\",\n        \"numeroCrefito\": \"123456\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "Endpoints do controller de **Fisioterapeutas**."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "idPaciente",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "idFisioterapeuta",
+			"value": "2",
+			"type": "string"
+		}
+	]
+}
