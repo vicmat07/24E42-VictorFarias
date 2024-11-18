@@ -2,7 +2,6 @@ package br.edu.infnet.victor.farias.model.domain;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +14,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
 
 @Entity
 @Table(name="Consultas")
@@ -72,7 +73,7 @@ public class Consulta {
 	public Consulta(LocalDate data, boolean particular, float preco, Fisioterapeuta fisioterapeuta) {
 		
 		if (data.isBefore(LocalDate.now())) {
-			throw new IllegalArgumentException("A data da consulta não pode ser no passado");
+			throw new DataConsultaInvalidaException("A data da consulta não pode ser no passado");
 		}
 		
 		this.data = data;

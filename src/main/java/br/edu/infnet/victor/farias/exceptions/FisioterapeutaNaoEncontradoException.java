@@ -1,6 +1,6 @@
 package br.edu.infnet.victor.farias.exceptions;
 
-public class FisioterapeutaNaoEncontradoException extends RuntimeException {
+public class FisioterapeutaNaoEncontradoException extends ApplicationBaseException {
 
 	private static final long serialVersionUID = 1L;
 

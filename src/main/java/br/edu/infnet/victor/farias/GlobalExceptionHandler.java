@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.edu.infnet.victor.farias.exceptions.ApplicationBaseException;
 import br.edu.infnet.victor.farias.exceptions.ConsultaNaoEncontradaException;
 import br.edu.infnet.victor.farias.exceptions.DataConsultaInvalidaException;
 import br.edu.infnet.victor.farias.exceptions.FisioterapeutaNaoEncontradoException;
@@ -47,33 +48,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 	
-	@ExceptionHandler(PacienteNaoEncontradoException.class)
-	public ResponseEntity<Object> handleValidationExceptions(PacienteNaoEncontradoException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+	@ExceptionHandler(ApplicationBaseException.class)
+	public ResponseEntity<Object> handleValidationExceptions(ApplicationBaseException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@ExceptionHandler(GuiaExpiradaException.class)
-	public ResponseEntity<Object> handleValidationExceptions(GuiaExpiradaException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
-	}
-
-	@ExceptionHandler(DataConsultaInvalidaException.class)
-	public ResponseEntity<Object> handleValidationExceptions(DataConsultaInvalidaException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
-	}
 	
-	@ExceptionHandler(GuiaNaoEncontradaException.class)
-	public ResponseEntity<Object> handleValidationExceptions(GuiaNaoEncontradaException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler(FisioterapeutaNaoEncontradoException.class)
-	public ResponseEntity<Object> handleValidationExceptions(FisioterapeutaNaoEncontradoException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler(ConsultaNaoEncontradaException.class)
-	public ResponseEntity<Object> handleValidationExceptions(ConsultaNaoEncontradaException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-	}
 }

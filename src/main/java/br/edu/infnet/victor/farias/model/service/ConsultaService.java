@@ -39,7 +39,7 @@ public class ConsultaService {
 	
 	public Consulta modificarConsulta(Integer idConsulta, LocalDate data) {
 		Consulta consulta = consultaRepository.findById(idConsulta)
-				.orElseThrow();
+				.orElseThrow(() -> new ConsultaNaoEncontradaException(Constantes.MSG_CONSULTA_NOT_FOUND));
 		
 		if (consulta.getData().isAfter(data) || consulta.getData().isEqual(data)) {
 			throw new DataConsultaInvalidaException(Constantes.MSG_CONSULTA_INVALID_DATE);

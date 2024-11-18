@@ -1,6 +1,6 @@
 package br.edu.infnet.victor.farias.exceptions;
 
-public class ConsultaNaoEncontradaException extends RuntimeException {
+public class ConsultaNaoEncontradaException extends ApplicationBaseException {
 	
 	private static final long serialVersionUID = 1L;
 
